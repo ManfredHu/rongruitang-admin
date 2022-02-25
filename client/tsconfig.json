@@ -12,6 +12,10 @@
     "lib": [
       "esnext",
       "dom"
+    ],
+    // https://www.naiveui.com/zh-CN/os-theme/docs/usage-sfc
+    "types": [
+      "naive-ui/volar"
     ]
   },
   "include": [

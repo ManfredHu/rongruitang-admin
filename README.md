@@ -42,7 +42,7 @@ error base `server/src/core/filter/http-exception.filter.ts`
 
 ### vscode plugin
 
-- [](https://marketplace.visualstudio.com/items?itemName=mongodb.mongodb-vscode)
+- [mongodb](https://marketplace.visualstudio.com/items?itemName=mongodb.mongodb-vscode)
 
 ## build
 output direactory: `dist/client` or `dist/server`

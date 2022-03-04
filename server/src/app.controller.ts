@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,5 +8,21 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('stringerror')
+  async forbidden() {
+    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+  }
+
+  @Get('recorderror')
+  async error2() {
+    throw new HttpException(
+      {
+        code: -2,
+        msg: '发生错误',
+      },
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 }

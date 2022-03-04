@@ -7,8 +7,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './user/user.module';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+// import { dbconfig } from './config/mongodb'
 @Module({
   imports: [
     // for static files on https://docs.nestjs.com/recipes/serve-static
@@ -22,6 +22,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()], // apollo-server plugin
     }),
+    // https://typeorm.bootcss.com/connection-options#mongodb
+    // TypeOrmModule.forRoot(dbconfig as TypeOrmModuleOptions),
     TypeOrmModule.forRoot({
       database: 'dearmydbs', // dbs名，默认test
       type: 'mongodb', // type，还有mysql等

@@ -1,4 +1,5 @@
 import { Controller, Logger, Get } from '@nestjs/common';
+import { User } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -14,7 +15,7 @@ export class UserController {
   }
 
   @Get('createUser')
-  async createUser(): Promise<boolean> {
+  async createUser(): Promise<User | boolean>  {
     console.log('user controller exec');
     const rst = await this.userService.create({
       username: 'ManfredHu',
@@ -22,9 +23,8 @@ export class UserController {
     });
     Logger.log('createUser rst', rst);
     if (rst) {
-      return true;
-    } else {
-      return false;
+      return rst;
     }
+    return false;
   }
 }

@@ -23,7 +23,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       plugins: [ApolloServerPluginLandingPageLocalDefault()], // apollo-server plugin
     }),
     TypeOrmModule.forRoot({
-      type: 'mongodb',
+      database: 'dearmydbs', // dbs名，默认test
+      type: 'mongodb', // type，还有mysql等
       url: 'mongodb://localhost:27017/?readPreference=primary&ssl=false',
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
       synchronize: true,

@@ -1,0 +1,24 @@
+type Admin {
+  username: String!
+  password: String!
+}
+
+input CreateAdminInput {
+  username: String!
+  password: String!
+}
+
+input UpdateAdminInput {
+  id: Int!
+}
+
+type Query {
+  # admin: [Admin]!
+  admin(id: Int!): Admin
+}
+
+type Mutation {
+  createAdmin(createAdminInput: CreateAdminInput!): Admin!
+  updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
+  removeAdmin(id: Int!): Admin
+}

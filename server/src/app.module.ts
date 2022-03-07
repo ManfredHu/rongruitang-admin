@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 // import { dbconfig } from './config/mongodb'
+import { AdminModule } from './admin/admin.module';
+
 @Module({
   imports: [
     // for static files on https://docs.nestjs.com/recipes/serve-static
@@ -34,6 +36,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
       logging: true,
     }),
     UserModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

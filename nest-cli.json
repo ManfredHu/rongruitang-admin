@@ -4,5 +4,8 @@
   "sourceRoot": "server/src",
   "compilerOptions": {
     "tsConfigPath": "server/tsconfig.build.json"
+  },
+  "generateOptions": {
+    "spec": false
   }
 }

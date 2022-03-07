@@ -1,10 +1,21 @@
-import { Controller, Logger, Get, HttpStatus, HttpException, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Logger,
+  Get,
+  HttpStatus,
+  HttpException,
+  UseInterceptors,
+} from '@nestjs/common';
 import { User } from './user.entity';
 import { UserService } from './user.service';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+@ApiTags('用户')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiOperation({summary: '测试'})
   @Get()
   getHello() {
     return {
@@ -13,6 +24,7 @@ export class UserController {
     };
   }
 
+  @ApiOperation({summary: '创建用户'})
   @Get('createUser')
   async createUser(): Promise<User | boolean> {
     const rst = await this.userService.create({

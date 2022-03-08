@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ServeStaticModule } from '@nestjs/serve-static';
+// import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -10,12 +10,21 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 // import { dbconfig } from './config/mongodb'
 import { AdminModule } from './admin/admin.module';
+import { TestModule } from './test/test.module';
+import { ConfigService, ConfigModule } from '@nestjs/config';
+import envConfig from './config/env';
 
 @Module({
   imports: [
+    // https://docs.nestjs.com/techniques/configuration#schema-validation
+    ConfigModule.forRoot({
+      isGlobal: true, // 设置为全局
+      envFilePath: [envConfig.path],
+    }),
     // for static files on https://docs.nestjs.com/recipes/serve-static
     // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '../../dist/client'),
+    //   rootPath: join(__dirname, '../../../client'),
+    //   exclude: ['/api*', '/graphql*', '/docs*'], // https://github.com/nestjs/nest/blob/master/sample/24-serve-static/src/app.module.ts
     // }),
     // https://docs.nestjs.com/graphql/quick-start
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -26,17 +35,23 @@ import { AdminModule } from './admin/admin.module';
     }),
     // https://typeorm.bootcss.com/connection-options#mongodb
     // TypeOrmModule.forRoot(dbconfig as TypeOrmModuleOptions),
-    TypeOrmModule.forRoot({
-      database: 'dearmydbs', // dbs名，默认test
-      type: 'mongodb', // type，还有mysql等
-      url: 'mongodb://localhost:27017/?readPreference=primary&ssl=false',
-      entities: [join(__dirname, '**/**.entity{.ts,.js}')],
-      synchronize: true,
-      useNewUrlParser: true,
-      logging: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'mongodb', // type，还有mysql等
+        entities: [join(__dirname, '**/**.entity{.ts,.js}')],
+        synchronize: true,
+        useNewUrlParser: true,
+        logging: true,
+        host: configService.get('DB_HOST', 'localhost'), // 主机，默认为localhost
+        port: configService.get<number>('DB_PORT', 27017), // 端口号
+        database: configService.get('DB_DATABASE', ''), //数据库名
+      })
     }),
     UserModule,
     AdminModule,
+    TestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

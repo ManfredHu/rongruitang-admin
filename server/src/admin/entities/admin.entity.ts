@@ -33,7 +33,6 @@ export class Admin extends BaseEntity {
   // root 读写都有,超级管理员
   // admin 读写都有，普通
   // visitor 只有读
-
   @Column({
     type: 'enum',
     enum: UserRole,

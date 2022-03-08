@@ -11,6 +11,9 @@ import { svrConfig } from './config/server';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // 全局接口前缀
+  app.setGlobalPrefix('api');
+  
   // 拦截器
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalInterceptors(new TransformInterceptor());

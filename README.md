@@ -4,7 +4,12 @@
 
 base vue3 + vite, vite run on port 3001
 
-- ui framework [Naive UI](https://www.naiveui.com/zh-CN/os-theme/docs/usage-sfc)
+- 前端 http://localhost:3001
+- 后台 http://localhost:3000
+  - Swagger接口文档 http://localhost:3000/docs/
+  - GraphQL控制台 
+
+- ui framework [Element Plus](https://element-plus.org/zh-CN/guide/quickstart.html#%E5%AE%8C%E6%95%B4%E5%BC%95%E5%85%A5)
 ## server
 base nestjs, run on port 3000
 

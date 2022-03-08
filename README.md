@@ -9,7 +9,7 @@ base vue3 + vite, vite run on port 3001
   - Swagger接口文档 http://localhost:3000/docs/
   - GraphQL控制台 
 
-- ui framework [Element Plus](https://element-plus.org/zh-CN/guide/quickstart.html#%E5%AE%8C%E6%95%B4%E5%BC%95%E5%85%A5)
+- ui framework [Naive UI](https://www.naiveui.com/zh-CN/os-theme/components/input)
 ## server
 base nestjs, run on port 3000
 

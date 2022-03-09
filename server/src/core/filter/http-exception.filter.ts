@@ -1,7 +1,7 @@
 import {ArgumentsHost,Catch, ExceptionFilter, HttpException, Logger} from '@nestjs/common';
 
 type ErrorObj = { code?: number, msg?: string, data: Record<string, any>}
-
+type DefaultErrorObj = { statusCode?: number, message?: string, error?: any};
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
@@ -10,22 +10,27 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus(); // 获取异常状态码
     const exceptionResp = exception.getResponse();
 
-    console.log(`exception.message`, exception.message);
-    console.log(`exceptionResp`, exceptionResp);
+    // console.log(`exception.message`, exception.message);
+    // console.log(`exceptionResp`, exceptionResp);
     Logger.error(exception.message);
+    Logger.error(`exceptionResp: ${JSON.stringify(exceptionResp)}`);
 
-    // 设置错误信息
-    // const message = exception.message
-    //   ? exception.message
-    //   : `${status >= 500 ? 'Service Error' : 'Client Error'}`;
-
-    let errorResponse: ErrorObj = { data: null}
+    let errorResponse: ErrorObj | DefaultErrorObj = { data: null };
     if (typeof exceptionResp === 'string') {
-      errorResponse.code = -1
+      errorResponse.code = -1;
       errorResponse.msg = exceptionResp;
     } else {
-      errorResponse.code = (exceptionResp as ErrorObj).code;
-      errorResponse.msg = (exceptionResp as ErrorObj).msg;
+      errorResponse.code =
+        (exceptionResp as ErrorObj).code ||
+        (exceptionResp as DefaultErrorObj).statusCode;
+
+      errorResponse.msg =
+        (exceptionResp as ErrorObj).msg ||
+        (exceptionResp as DefaultErrorObj).message;
+
+      if ((exceptionResp as DefaultErrorObj).error) {
+        errorResponse.data = (exceptionResp as DefaultErrorObj).error
+      }
     }
 
     // 设置返回的状态码， 请求头，发送错误信息

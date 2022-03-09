@@ -6,12 +6,13 @@ import { UserInput } from './user.input';
 import * as uuid from 'uuid'
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private readonly userRepository: MongoRepository<User>) {
-
-  }
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: MongoRepository<User>,
+  ) {}
 
   async create(input: UserInput): Promise<User> {
-    console.log(`user service create() exec`)
+    console.log(`user service create() exec`);
     const user = new User();
     user._id = uuid.v4();
     user.username = input.username;
@@ -22,6 +23,27 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     console.log(`user service findAll() exec`);
-    return this.userRepository.find() // 返回的是promise
+    return this.userRepository.find(); // 返回的是promise
   }
+
+  // async findOne(username: string): Promise<User | undefined> {
+  //   const users = [
+  //     {
+  //       userId: 1,
+  //       username: 'john',
+  //       password: 'changeme',
+  //     },
+  //     {
+  //       userId: 2,
+  //       username: 'chris',
+  //       password: 'secret',
+  //     },
+  //     {
+  //       userId: 3,
+  //       username: 'maria',
+  //       password: 'guess',
+  //     },
+  //   ];
+  //   return users.find((user) => user.username === username);
+  // }
 }

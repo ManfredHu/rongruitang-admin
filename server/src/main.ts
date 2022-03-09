@@ -12,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // 全局接口前缀
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
   
   // 拦截器
   app.useGlobalInterceptors(new LoggingInterceptor());

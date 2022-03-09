@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateAdminInput } from './dto/create-admin.input';
 import { UpdateAdminInput } from './dto/update-admin.input';
 import { MongoRepository, Repository } from 'typeorm';
@@ -7,7 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AdminService {
-  constructor(@InjectRepository(Admin) private readonly adminRepository: MongoRepository<Admin>) {}
+  constructor(
+    @InjectRepository(Admin)
+    private readonly adminRepository: MongoRepository<Admin>,
+  ) {}
 
   create(createAdminInput: CreateAdminInput) {
     return 'This action adds a new admin';
@@ -15,10 +18,6 @@ export class AdminService {
 
   findAll() {
     return `This action returns all admin`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
   }
 
   update(id: number, updateAdminInput: UpdateAdminInput) {
@@ -29,6 +28,11 @@ export class AdminService {
     return `This action removes a #${id} admin`;
   }
 
+  /**
+   * admin注册
+   * @param createAdmin
+   * @returns
+   */
   async register(createAdmin: CreateAdminInput) {
     const { username } = createAdmin;
 
@@ -38,11 +42,37 @@ export class AdminService {
     });
 
     if (existUser) {
-      throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST);
+      throw new HttpException('用户名已存在', HttpStatus.OK);
     }
 
     const newUser = this.adminRepository.create(createAdmin);
-    console.log(`register`, createAdmin, existUser);
+    Logger.log(
+      `server/src/admin/admin.service.ts ${JSON.stringify(
+        createAdmin,
+      )} ${existUser}`,
+    );
     return await this.adminRepository.save(newUser);
+  }
+
+  async findOneAdminByName(username: string) {
+    Logger.log(`findOneAdminByName username: ${username}`);
+
+    const existUser = await this.adminRepository.findOne({
+      where: { username },
+    });
+    if (!existUser) {
+      throw new HttpException('管理不存在', HttpStatus.OK);
+    }
+    return existUser;
+  }
+
+  async validateUser(username: string): Promise<any> {
+    Logger.log(
+      `server/src/admin/admin.service.ts validateUser ${username}`,
+    );
+    const existUser = await this.adminRepository.findOne({
+      where: { username },
+    });
+    return existUser ? existUser: null;
   }
 }

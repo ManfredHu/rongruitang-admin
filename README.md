@@ -5,18 +5,26 @@
 base vue3 + vite, vite run on port 3001
 
 - 前端 http://localhost:3001
-- 后台 http://localhost:3000
-  - Swagger接口文档 http://localhost:3000/docs/
+- 后台 http://localhost:9000
+  - Swagger接口文档 http://localhost:9000/docs/
   - GraphQL控制台 
 
 - ui framework [Naive UI](https://www.naiveui.com/zh-CN/os-theme/components/input)
 ## server
-base nestjs, run on port 3000
+base nestjs, run on port 9000
 
 - [GraphQL](https://docs.nestjs.com/graphql/quick-start)
 - [Use Apollo Sandbox](https://www.apollographql.com/blog/announcement/platform/apollo-sandbox-an-open-graphql-ide-for-local-development/) 更好管理GraphQL
 
 ### 统一输出
+nest默认输出
+```json
+{
+  "statusCode": 401,
+  "error":"Not Found",
+  "message":"Cannot GET /member"
+}
+```
 
 #### 统一res输出
 success base `server/src/core/interceptor/transform.interceptor.ts`
@@ -49,6 +57,29 @@ error base `server/src/core/filter/http-exception.filter.ts`
   msg: "发生错误" // 自定义输出
 }
 ```
+
+#### nest默认错误异常抛出
+形如 `import { UnauthorizedException } from '@nestjs/common';`可以从`@nestjs/common'`获取到，具体的statusCode和message对应如下，经过如上转化`statusCode`会变为`code`，`message`对应`msg`
+
+| 异常类型        | statusCode   |  message  |
+| --------   | -----:  | :----:  |
+|BadRequestException| | |
+|UnauthorizedException  | 401| Unauthorized|
+|NotFoundException| | |
+|ForbiddenException| | |
+|NotAcceptableException| | |
+|RequestTimeoutException| | |
+|ConflictException| | |
+|GoneException| | |
+|PayloadTooLargeException| | |
+|UnsupportedMediaTypeException| | |
+|UnprocessableException| | |
+|InternalServerErrorException| | |
+|NotImplementedException| | |
+|BadGatewayException| | |
+|ServiceUnavailableException| | |
+|GatewayTimeoutException| | |
+
 
 ### 日志输出
 拦截器在 `server/src/core/interceptor/logging.interceptor.ts`，全局使用，应上报res和req参数等方便日志查询

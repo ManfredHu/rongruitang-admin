@@ -17,10 +17,10 @@ export class AdminResolver {
   //   return this.adminService.findAll();
   // }
 
-  @Query('admin')
-  findOne(@Args('id') id: number) {
-    return this.adminService.findOne(id);
-  }
+  // @Query('admin')
+  // findOne(@Args('id') id: number) {
+  //   return this.adminService.findOne(id);
+  // }
 
   @Mutation('updateAdmin')
   update(@Args('updateAdminInput') updateAdminInput: UpdateAdminInput) {

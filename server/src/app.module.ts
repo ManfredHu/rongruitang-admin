@@ -10,9 +10,9 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 // import { dbconfig } from './config/mongodb'
 import { AdminModule } from './admin/admin.module';
-import { TestModule } from './test/test.module';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import envConfig from './config/env';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -47,11 +47,11 @@ import envConfig from './config/env';
         host: configService.get('DB_HOST', 'localhost'), // 主机，默认为localhost
         port: configService.get<number>('DB_PORT', 27017), // 端口号
         database: configService.get('DB_DATABASE', ''), //数据库名
-      })
+      }),
     }),
     UserModule,
     AdminModule,
-    TestModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

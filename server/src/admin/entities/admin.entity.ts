@@ -1,11 +1,19 @@
-import { BaseEntity, BeforeInsert, Column, Entity, ObjectIdColumn } from 'typeorm';
+import {
+  BaseEntity,
+  BeforeInsert,
+  Column,
+  Entity,
+  ObjectIdColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcryptjs';
+import { Logger } from '@nestjs/common';
+import { salt } from '../../config/admin';
 
 export enum UserRole {
   ROOT = 'root',
   ADMIN = 'admin',
-  VISITOR = 'visitor'
+  VISITOR = 'visitor',
 }
 
 @Entity()
@@ -58,6 +66,10 @@ export class Admin extends BaseEntity {
   // 使用了装饰器@BeforeInsert来装饰encryptPwd方法，表示该方法在数据插入之前调用，这样就能保证插入数据库的密码都是加密后的。
   @BeforeInsert()
   async encryptPwd() {
-    this.password = await bcrypt.hashSync(this.password);
+    const cipherText = await bcrypt.hashSync(this.password, salt);
+    Logger.log(
+      `server/src/admin/entities/admin.entity.ts cipherText: ${cipherText}`,
+    );
+    this.password = cipherText;
   }
 }

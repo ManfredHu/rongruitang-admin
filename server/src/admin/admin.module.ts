@@ -9,5 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([Admin])],
   providers: [AdminResolver, AdminService],
   controllers: [AdminController],
+  exports: [AdminService], // 提供给其他模块外部可见
 })
 export class AdminModule {}

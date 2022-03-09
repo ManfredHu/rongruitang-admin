@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateAdminInput {
+export class RegisterAdminInput {
   @ApiProperty({ description: '用户名' })
   @IsNotEmpty({ message: '用户名必填' })
   readonly username: string;

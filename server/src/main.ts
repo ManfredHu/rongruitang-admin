@@ -29,7 +29,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document); // 打开 http://localhost:9080/docs 就可以看到文档了
+  SwaggerModule.setup('docs', app, document); // 打开 http://localhost:9000/docs 就可以看到文档了
 
   await app.listen(svrConfig.port);
   Logger.log(

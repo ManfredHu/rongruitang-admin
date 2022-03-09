@@ -87,7 +87,7 @@ error base `server/src/core/filter/http-exception.filter.ts`
 
 ### Swagger接口文档
 
-open [http://localhost:9080/docs](http://localhost:9080/docs)
+open [http://localhost:9000/docs](http://localhost:9000/docs)
 
 挂controller上接口分类和接口描述
 ```ts

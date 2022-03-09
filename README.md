@@ -17,7 +17,9 @@ base nestjs, run on port 9000
 - [Use Apollo Sandbox](https://www.apollographql.com/blog/announcement/platform/apollo-sandbox-an-open-graphql-ide-for-local-development/) 更好管理GraphQL
 
 ### 统一输出
-nest默认输出
+
+#### nestjs框架默认
+nest默认输出如下
 ```json
 {
   "statusCode": 401,
@@ -25,6 +27,27 @@ nest默认输出
   "message":"Cannot GET /member"
 }
 ```
+默认错误异常抛出
+形如 `import { UnauthorizedException } from '@nestjs/common';`可以从`@nestjs/common'`获取到，具体的statusCode和message对应如下，经过如上转化`statusCode`会变为`code`，`message`对应`msg`
+
+| 异常类型        | statusCode   |  message  |
+| --------   | -----:  | :----:  |
+|BadRequestException| | |
+|UnauthorizedException  | 401| Unauthorized|
+|NotFoundException| | |
+|ForbiddenException| | |
+|NotAcceptableException| | |
+|RequestTimeoutException| | |
+|ConflictException| | |
+|GoneException| | |
+|PayloadTooLargeException| | |
+|UnsupportedMediaTypeException| | |
+|UnprocessableException| | |
+|InternalServerErrorException| | |
+|NotImplementedException| | |
+|BadGatewayException| | |
+|ServiceUnavailableException| | |
+|GatewayTimeoutException| | |
 
 #### 统一res输出
 success base `server/src/core/interceptor/transform.interceptor.ts`
@@ -57,28 +80,6 @@ error base `server/src/core/filter/http-exception.filter.ts`
   msg: "发生错误" // 自定义输出
 }
 ```
-
-#### nest默认错误异常抛出
-形如 `import { UnauthorizedException } from '@nestjs/common';`可以从`@nestjs/common'`获取到，具体的statusCode和message对应如下，经过如上转化`statusCode`会变为`code`，`message`对应`msg`
-
-| 异常类型        | statusCode   |  message  |
-| --------   | -----:  | :----:  |
-|BadRequestException| | |
-|UnauthorizedException  | 401| Unauthorized|
-|NotFoundException| | |
-|ForbiddenException| | |
-|NotAcceptableException| | |
-|RequestTimeoutException| | |
-|ConflictException| | |
-|GoneException| | |
-|PayloadTooLargeException| | |
-|UnsupportedMediaTypeException| | |
-|UnprocessableException| | |
-|InternalServerErrorException| | |
-|NotImplementedException| | |
-|BadGatewayException| | |
-|ServiceUnavailableException| | |
-|GatewayTimeoutException| | |
 
 
 ### 日志输出

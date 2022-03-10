@@ -102,6 +102,54 @@ export class UserController {
 }
 ```
 
+#### entity实体字段定义
+实体可以定义字段描述和默认值，装饰器和注释都支持，可以看[示例](https://github.com/nestjs/nest/blob/master/sample/11-swagger/src/cats/entities/cat.entity.ts)
+
+```ts
+export class Cat {
+  /**
+   * The name of the Cat
+   * @example Kitty
+   */
+  name: string;
+
+  @ApiProperty({ example: 1, description: 'The age of the Cat' })
+  age: number;
+
+  @ApiProperty({
+    example: 'Maine Coon',
+    description: 'The breed of the Cat',
+  })
+  breed: string;
+}
+```
+
+#### 接口返回
+
+默认get成功200,post成功201,如果是其他错误码需要补充完善
+
+```ts
+export class CatsController {
+  @Post()
+  @ApiOperation({ summary: 'Create cat' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
+    return this.catsService.create(createCatDto);
+  }
+}
+```
+
+#### jwt鉴权
+
+对应小🔒，主要是接口如果鉴权需要标注，可以在controller全局定义，如下
+
+```ts
+@ApiBearerAuth()
+@ApiTags('cats')
+@Controller('cats')
+export class CatsController {}
+```
+
 ### TypeORM 
 [TypeORM里insert和save关系](https://stackoverflow.com/questions/69642819/what-the-difference-between-save-and-insert-when-wanting-to-create-new-record-in)
 
@@ -120,6 +168,11 @@ MongoRepository 继承 Repository 基类， Repository有兼容mysql，mongodb�
 #### 更新（Update）
 
 #### 读取（Retrieve）
+
+```
+find 一个数组返回所有集合
+findAndCount [一个数组返回所有集合, count]
+```
 
 #### 删除（Delete）
 ### MongoDB的ObjectID

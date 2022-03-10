@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request, Get, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Get, Body, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginInfo } from 'src/common/types/login';
 import { AuthService } from './auth.service';
@@ -7,6 +7,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { ApiProperty } from '@nestjs/swagger';
 import { LoginInput } from './dto/login.input'
 
+@UseInterceptors(ClassSerializerInterceptor) // 可以支持实体@Exclude()属性，过滤password字段返回
 @ApiTags('身份验证')
 @Controller('auth')
 export class AuthController {

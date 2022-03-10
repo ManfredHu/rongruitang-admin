@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateAdminInput } from './dto/create-admin.input';
 import { UpdateAdminInput } from './dto/update-admin.input';
-import { MongoRepository, Repository } from 'typeorm';
+import { MongoRepository } from 'typeorm';
 import { Admin } from './entities/admin.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -66,13 +66,20 @@ export class AdminService {
     return existUser;
   }
 
-  async validateUser(username: string): Promise<any> {
-    Logger.log(
-      `server/src/admin/admin.service.ts validateUser ${username}`,
-    );
+  async validateUser(username: string): Promise<Admin | null> {
+    Logger.log(`server/src/admin/admin.service.ts validateUser ${username}`);
+
+    //  TypeORMError: Query Builder is not supported by MongoDB.
+    //  const admin = await this.adminRepository
+    //   .createQueryBuilder('admin')
+    //   .addSelect('admin.password')
+    //   .where('admin.username=:username', { username })
+    //   .getOne();
+
     const existUser = await this.adminRepository.findOne({
       where: { username },
     });
+    
     return existUser ? existUser: null;
   }
 }

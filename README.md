@@ -32,7 +32,7 @@ nest默认输出如下
 
 | 异常类型        | statusCode   |  message  |
 | --------   | -----:  | :----:  |
-|BadRequestException| | |
+|BadRequestException| 400| Bad Request|
 |UnauthorizedException  | 401| Unauthorized|
 |NotFoundException| | |
 |ForbiddenException| | |
@@ -50,6 +50,8 @@ nest默认输出如下
 |GatewayTimeoutException| | |
 
 #### 统一res输出
+主要是`code: 0`定义为正常业务请求，而`code !== 0`定义为异常业务请求，如果是全局的http错误全局捕获统一输出
+
 success base `server/src/core/interceptor/transform.interceptor.ts`
 ```base
 {
@@ -105,12 +107,51 @@ export class UserController {
 
 MongoRepository 继承 Repository 基类， Repository有兼容mysql，mongodb等的公共方法
 
+可以翻阅TypeORM的[方法签名代码](https://github.com/typeorm/typeorm/blob/master/src/repository/MongoRepository.ts)看到
+
+#### 创建（Create）
 - save: 如果实体不存在数据库则插入，否则更新
 - create: 创建新实体实例
 - insert: 
   - 插入实体到数据库，与save方法不同的是，save方法执行的基元操作不包括级联、关系和其他操作
   - insert执行更加高效
   - 不检查数据库中是否存在实体，因此如果插入重复实体，查询将失败
+
+#### 更新（Update）
+
+#### 读取（Retrieve）
+
+#### 删除（Delete）
+### MongoDB的ObjectID
+
+TypeORM对应MongoDB的列时,id作为主键存在，是一个Object。原型有方法`getTimestamp`，来自[这里](https://stackoverflow.com/questions/7327296/how-do-i-extract-the-created-date-out-of-a-mongo-objectid)
+
+```js
+ObjectId.prototype.getTimestamp = function() {
+    return new Date(parseInt(this.toString().slice(0,8), 16)*1000);
+}
+```
+
+故对应实体如下的列，其创建时间可以直接调用`getTimestamp()`获取到。如果要Hex值可以调用`userId: user.id.toHexString(),`这样的写法
+
+```ts
+import {
+  BaseEntity,
+  Entity,
+  ObjectID,
+  ObjectIdColumn,
+} from 'typeorm';
+
+@Entity()
+export class Admin extends BaseEntity {
+  // mongodb 不能使用@PrimaryGeneratedColumn
+  @ObjectIdColumn()
+  id: ObjectID;
+}
+```
+
+如id为622879123c52bbdea50fdd6b,取前8位`62287912`转化为16进制得unix时间戳`1646819602`
+
 ### vscode plugin
 
 - [mongodb](https://marketplace.visualstudio.com/items?itemName=mongodb.mongodb-vscode)

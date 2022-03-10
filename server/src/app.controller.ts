@@ -12,7 +12,12 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { User } from './user/user.entity';
+import type {
+  LoginInfo
+} from './common/types/login'
+
 
 @ApiTags('基础')
 @Controller()
@@ -42,14 +47,5 @@ export class AppController {
       },
       HttpStatus.UNAUTHORIZED,
     );
-  }
-
-  // curl -X POST http://localhost:9000/auth/login -d '{"username": "ff", "password": "ff"}' -H "Content-Type: application/json"
-  @ApiOperation({ summary: '用户名密码登陆' })
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
-  async login(@Request() req) {
-    console.log(req.User)
-    return "ok"
   }
 }

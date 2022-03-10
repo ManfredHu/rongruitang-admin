@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PostsEntity } from './posts.entity';
+import { PostsEntity } from './entities/posts.entity';
 
 // interface CreatePostDto {
 //   readonly title: string;

@@ -167,14 +167,28 @@ MongoRepository 继承 Repository 基类， Repository有兼容mysql，mongodb�
 
 #### 更新（Update）
 
+merge then save, save会判断是新增还是更新
+
+```ts
+const updatePost = this.postsRepository.merge(existPost, post);
+console.log(`updatePost`, updatePost);
+return this.postsRepository.save(updatePost);
+```
+
 #### 读取（Retrieve）
 
 ```
 find 一个数组返回所有集合
-findAndCount [一个数组返回所有集合, count]
+findOne 找到一个直接返回，非数组
+findAndCount [一个数组返回所有集合, count] ， count不是找出的数量，数量用find找
 ```
 
 #### 删除（Delete）
+
+```ts
+return await this.postsRepository.delete(id)
+```
+
 ### MongoDB的ObjectID
 
 TypeORM对应MongoDB的列时,id作为主键存在，是一个Object。原型有方法`getTimestamp`，来自[这里](https://stackoverflow.com/questions/7327296/how-do-i-extract-the-created-date-out-of-a-mongo-objectid)

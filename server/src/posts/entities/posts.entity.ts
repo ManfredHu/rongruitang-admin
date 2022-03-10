@@ -1,8 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ObjectID, ObjectIdColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
+import {
+  BaseEntity,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  ObjectID,
+  ObjectIdColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  VersionColumn,
+} from 'typeorm';
 
 @Entity('post')
-export class PostsEntity {
+export class PostsEntity extends BaseEntity {
   // mongodb 不能使用@PrimaryGeneratedColumn
   @ObjectIdColumn()
   id: ObjectID;
@@ -11,6 +24,7 @@ export class PostsEntity {
   // id: number; // 标记为主列，值自动生成
 
   @ApiProperty({ example: 'title', description: 'post title, max length 50' })
+  @Index({ unique: true })
   @Column({ type: 'varchar', length: 50 })
   title: string;
 

@@ -1,4 +1,4 @@
-import { PostsEntity } from './posts.entity';
+import { PostsEntity } from './entities/posts.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { PostsController } from './posts.controller';
